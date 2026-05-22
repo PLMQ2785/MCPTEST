@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>키보드 입력 테스트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+
+        .info-panel {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            color: #333;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+
+        .keyboard-section {
+            background-color: white;
+        }
+
+        .row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 6px;
+            justify-content: center;
+        }
+
+        .key {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 8px;
+            background-color: white;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.1s ease;
+        }
+
+        .key:hover {
+            background-color: #f9f9f9;
+            border-color: #bbb;
+        }
+
+        .key.pressed {
+            background-color: #333;
+            color: white;
+            border-color: #333;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transform: translateY(2px);
+        }
+
+        .key.space {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .key.tab,
+        .key.shift,
+        .key.ctrl,
+        .key.alt,
+        .key.meta,
+        .key.enter,
+        .key.backspace,
+        .key.delete {
+            min-width: 50px;
+        }
+
+        .key.escape {
+            background-color: #f5f5f5;
+            border-color: #ccc;
+        }
+
+        .key.escape.pressed {
+            background-color: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        .history {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .history-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-height: 60px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            background-color: #f0f0f0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #555;
+            font-family: 'Courier New', monospace;
+        }
+
+        .clear-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .clear-btn:hover {
+            background-color: #eee;
+            border-color: #bbb;
+        }
+
+        .modifier-indicator {
+            font-size: 11px;
+            color: #888;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⌨️ 키보드 입력 테스트</h1>
+        <p class="subtitle">키보드 버튼을 누르면 시각적으로 표시됩니다</p>
+
+        <div class="info-panel">
+            <div class="info-item">
+                <div class="info-label">마지막 입력</div>
+                <div class="info-value" id="lastKey">대기 중</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Key Code</div>
+                <div class="info-value" id="keyCode">-</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">입력 횟수</div>
+                <div class="info-value" id="keyCount">0</div>
+            </div>
+        </div>
+
+        <div class="keyboard-section" id="keyboard"></div>
+
+        <div class="history">
+            <div class="history-title">📋 입력 기록</div>
+            <div class="history-list" id="history"></div>
+            <button class="clear-btn" onclick="clearHistory()">기록 초기화</button>
+        </div>
+    </div>
+
+    <script>
+        // 키보드 레이아웃
+        const keyboardLayout = [
+            ['Esc', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
+            ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
+            ['CapsLock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
+            ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift'],
+            ['Ctrl', 'Alt', 'Space', 'Alt', 'Ctrl']
+        ];
+
+        let keyCount = 0;
+        let keyHistory = [];
+
+        // 키보드 생성
+        function createKeyboard() {
+            const keyboard = document.getElementById('keyboard');
+
+            keyboardLayout.forEach((row, rowIndex) => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'row';
+
+                row.forEach(keyLabel => {
+                    const keyDiv = document.createElement('div');
+                    keyDiv.className = 'key';
+                    keyDiv.textContent = keyLabel;
+                    keyDiv.id = 'key-' + keyLabel.toLowerCase();
+
+                    // 특수 키 스타일
+                    if (['Escape'].includes(keyLabel)) {
+                        keyDiv.classList.add('escape');
+                    } else if (['Tab', 'Shift', 'Ctrl', 'Alt', 'Enter', 'Backspace', 'Delete', 'CapsLock'].includes(keyLabel)) {
+                        keyDiv.classList.add(keyLabel.toLowerCase());
+                    } else if (keyLabel === 'Space') {
+                        keyDiv.classList.add('space');
+                    }
+
+                    rowDiv.appendChild(keyDiv);
+                });
+
+                keyboard.appendChild(rowDiv);
+            });
+        }
+
+        // 키 매핑
+        const keyMap = {
+            'Escape': 'Esc',
+            'Tab': 'Tab',
+            'CapsLock': 'CapsLock',
+            'ShiftLeft': 'Shift',
+            'ShiftRight': 'Shift',
+            'ControlLeft': 'Ctrl',
+            'ControlRight': 'Ctrl',
+            'AltLeft': 'Alt',
+            'AltRight': 'Alt',
+            'Enter': 'Enter',
+            'Backspace': 'Backspace',
+            'Delete': 'Delete',
+            'Space': 'Space',
+            'Minus': '-',
+            'Equal': '=',
+            'BracketLeft': '[',
+            'BracketRight': ']',
+            'Backslash': '\\',
+            'Semicolon': ';',
+            'Quote': "'",
+            'Comma': ',',
+            'Period': '.',
+            'Slash': '/',
+            'IntlBackslash': '\\',
+        };
+
+        function getKeyLabel(e) {
+            if (keyMap[e.code]) {
+                return keyMap[e.code];
+            }
+
+            if (e.key === ' ') return 'Space';
+            if (e.key === 'Enter') return 'Enter';
+            if (e.key === 'Backspace') return 'Backspace';
+            if (e.key === 'Delete') return 'Delete';
+            if (e.key === 'Tab') return 'Tab';
+
+            return e.key.toUpperCase();
+        }
+
+        // 키 다운 이벤트
+        document.addEventListener('keydown', (e) => {
+            const keyLabel = getKeyLabel(e);
+            const keyElement = document.getElementById('key-' + keyLabel.toLowerCase());
+
+            if (keyElement && !keyElement.classList.contains('pressed')) {
+                keyElement.classList.add('pressed');
+
+                keyCount++;
+                document.getElementById('lastKey').textContent = keyLabel;
+                document.getElementById('keyCode').textContent = e.code;
+                document.getElementById('keyCount').textContent = keyCount;
+
+                // 히스토리에 추가
+                addToHistory(keyLabel);
+            }
+        });
+
+        // 키 업 이벤트
+        document.addEventListener('keyup', (e) => {
+            const keyLabel = getKeyLabel(e);
+            const keyElement = document.getElementById('key-' + keyLabel.toLowerCase());
+
+            if (keyElement) {
+                keyElement.classList.remove('pressed');
+            }
+        });
+
+        // 히스토리 추가
+        function addToHistory(key) {
+            keyHistory.unshift(key);
+            if (keyHistory.length > 15) {
+                keyHistory.pop();
+            }
+            updateHistoryDisplay();
+        }
+
+        // 히스토리 표시
+        function updateHistoryDisplay() {
+            const historyDiv = document.getElementById('history');
+            historyDiv.innerHTML = '';
+            keyHistory.forEach(key => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                item.textContent = key;
+                historyDiv.appendChild(item);
+            });
+        }
+
+        // 히스토리 초기화
+        function clearHistory() {
+            keyHistory = [];
+            updateHistoryDisplay();
+            keyCount = 0;
+            document.getElementById('keyCount').textContent = '0';
+        }
+
+        // 초기화
+        createKeyboard();
+    </script>
+</body>
+</html>
