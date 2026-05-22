@@ -14,22 +14,79 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background-color: #f5f5f5;
+            color: #333;
             padding: 40px 20px;
             min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .theme-toggle {
+            width: 50px;
+            height: 28px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            background-color: #ddd;
+            position: relative;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            padding: 2px;
+        }
+
+        .theme-toggle.dark {
+            background-color: #555;
+        }
+
+        .toggle-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: white;
+            position: absolute;
+            left: 2px;
+            transition: left 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .theme-toggle.dark .toggle-circle {
+            left: 24px;
         }
 
         .container {
             max-width: 1000px;
             margin: 0 auto;
             background-color: white;
+            color: #333;
             border-radius: 12px;
             padding: 40px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.dark-mode .container {
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
             text-align: center;
-            color: #333;
             margin-bottom: 10px;
             font-size: 28px;
         }
@@ -39,6 +96,11 @@
             color: #888;
             margin-bottom: 40px;
             font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .subtitle {
+            color: #aaa;
         }
 
         .info-panel {
@@ -49,6 +111,11 @@
             background-color: #f9f9f9;
             border-radius: 8px;
             flex-wrap: wrap;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .info-panel {
+            background-color: #333;
         }
 
         .info-item {
@@ -62,17 +129,21 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 6px;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .info-label {
+            color: #888;
         }
 
         .info-value {
             font-size: 16px;
-            color: #333;
             font-family: 'Courier New', monospace;
             font-weight: 500;
         }
 
         .keyboard-section {
-            background-color: white;
+            transition: background-color 0.3s ease;
         }
 
         .row {
@@ -87,6 +158,7 @@
             height: 36px;
             padding: 0 8px;
             background-color: white;
+            color: #333;
             border: 2px solid #ddd;
             border-radius: 6px;
             display: flex;
@@ -94,15 +166,25 @@
             justify-content: center;
             font-size: 12px;
             font-weight: 500;
-            color: #333;
             cursor: pointer;
             user-select: none;
             transition: all 0.1s ease;
         }
 
+        body.dark-mode .key {
+            background-color: #3a3a3a;
+            color: #e0e0e0;
+            border-color: #555;
+        }
+
         .key:hover {
             background-color: #f9f9f9;
             border-color: #bbb;
+        }
+
+        body.dark-mode .key:hover {
+            background-color: #444;
+            border-color: #777;
         }
 
         .key.pressed {
@@ -111,6 +193,13 @@
             border-color: #333;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
             transform: translateY(2px);
+        }
+
+        body.dark-mode .key.pressed {
+            background-color: #e0e0e0;
+            color: #1a1a1a;
+            border-color: #e0e0e0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
         }
 
         .key.space {
@@ -134,6 +223,11 @@
             border-color: #ccc;
         }
 
+        body.dark-mode .key.escape {
+            background-color: #404040;
+            border-color: #555;
+        }
+
         .key.escape.pressed {
             background-color: #ff6b6b;
             border-color: #ff6b6b;
@@ -143,6 +237,11 @@
             margin-top: 40px;
             padding-top: 20px;
             border-top: 1px solid #eee;
+            transition: border-color 0.3s ease;
+        }
+
+        body.dark-mode .history {
+            border-top-color: #444;
         }
 
         .history-title {
@@ -152,6 +251,11 @@
             margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .history-title {
+            color: #aaa;
         }
 
         .history-list {
@@ -164,11 +268,17 @@
 
         .history-item {
             background-color: #f0f0f0;
+            color: #555;
             padding: 6px 12px;
             border-radius: 4px;
             font-size: 12px;
-            color: #555;
             font-family: 'Courier New', monospace;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode .history-item {
+            background-color: #3a3a3a;
+            color: #aaa;
         }
 
         .clear-btn {
@@ -176,11 +286,17 @@
             padding: 10px 20px;
             background-color: #f5f5f5;
             border: 1px solid #ddd;
+            color: #666;
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
-            color: #666;
             transition: all 0.2s ease;
+        }
+
+        body.dark-mode .clear-btn {
+            background-color: #3a3a3a;
+            border-color: #555;
+            color: #aaa;
         }
 
         .clear-btn:hover {
@@ -188,29 +304,47 @@
             border-color: #bbb;
         }
 
+        body.dark-mode .clear-btn:hover {
+            background-color: #444;
+            border-color: #777;
+        }
+
         .modifier-indicator {
             font-size: 11px;
             color: #888;
             margin-top: 4px;
         }
+
+        body.dark-mode .modifier-indicator {
+            color: #999;
+        }
     </style>
 </head>
 <body>
+    <div class="header">
+        <div></div>
+        <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+            <div class="toggle-circle">
+                <span id="toggleIcon">☀️</span>
+            </div>
+        </button>
+    </div>
+
     <div class="container">
-        <h1>⌨️ 키보드 입력 테스트</h1>
-        <p class="subtitle">키보드 버튼을 누르면 시각적으로 표시됩니다</p>
+        <h1>Keyboard Input Test</h1>
+        <p class="subtitle">Press any keyboard button to see visual feedback</p>
 
         <div class="info-panel">
             <div class="info-item">
-                <div class="info-label">마지막 입력</div>
-                <div class="info-value" id="lastKey">대기 중</div>
+                <div class="info-label">Last Input</div>
+                <div class="info-value" id="lastKey">Waiting</div>
             </div>
             <div class="info-item">
                 <div class="info-label">Key Code</div>
                 <div class="info-value" id="keyCode">-</div>
             </div>
             <div class="info-item">
-                <div class="info-label">입력 횟수</div>
+                <div class="info-label">Input Count</div>
                 <div class="info-value" id="keyCount">0</div>
             </div>
         </div>
@@ -218,14 +352,51 @@
         <div class="keyboard-section" id="keyboard"></div>
 
         <div class="history">
-            <div class="history-title">📋 입력 기록</div>
+            <div class="history-title">Input History</div>
             <div class="history-list" id="history"></div>
-            <button class="clear-btn" onclick="clearHistory()">기록 초기화</button>
+            <button class="clear-btn" onclick="clearHistory()">Clear History</button>
         </div>
     </div>
 
     <script>
-        // 키보드 레이아웃
+        // Theme management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDarkMode = savedTheme === 'dark' || (savedTheme === null && prefersDark);
+
+            if (isDarkMode) {
+                enableDarkMode();
+            } else {
+                disableDarkMode();
+            }
+        }
+
+        function enableDarkMode() {
+            document.body.classList.add('dark-mode');
+            document.getElementById('themeToggle').classList.add('dark');
+            document.getElementById('toggleIcon').textContent = '🌙';
+            localStorage.setItem('theme', 'dark');
+        }
+
+        function disableDarkMode() {
+            document.body.classList.remove('dark-mode');
+            document.getElementById('themeToggle').classList.remove('dark');
+            document.getElementById('toggleIcon').textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+
+        function toggleTheme() {
+            if (document.body.classList.contains('dark-mode')) {
+                disableDarkMode();
+            } else {
+                enableDarkMode();
+            }
+        }
+
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+        // Keyboard layout
         const keyboardLayout = [
             ['Esc', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
             ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
@@ -366,7 +537,8 @@
             document.getElementById('keyCount').textContent = '0';
         }
 
-        // 초기화
+        // Initialize
+        initTheme();
         createKeyboard();
     </script>
 </body>
